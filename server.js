@@ -119,7 +119,7 @@ function escapeCsv(val) {
 }
 
 app.listen(PORT, () => {
-  console.log(`DO Pilot Survey running at http://localhost:${PORT}`);
+  console.log(`DO Customer Success Survey running at http://localhost:${PORT}`);
   console.log(`Share page (QR code): http://localhost:${PORT}/share.html`);
   console.log(`Admin dashboard: http://localhost:${PORT}/admin.html`);
 });

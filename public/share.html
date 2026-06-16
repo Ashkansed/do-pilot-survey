@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Share Survey — QR Code</title>
+  <title>DO Customer Success Survey — Share</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
     </header>
 
     <div class="card share-card">
-      <h2>DO Pilot Customer Success Survey</h2>
+      <h2>DO Customer Success Survey</h2>
       <p style="color: var(--muted); margin-top: 0.5rem;">Recipients can scan this code with their phone camera to open the survey.</p>
 
       <img id="qrImage" class="qr-image" src="/api/qr" alt="Survey QR Code">
@@ -26,7 +26,7 @@
       <p id="copyStatus" style="font-size: 0.85rem; color: var(--success); display: none;">Link copied!</p>
 
       <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-        <a id="downloadQr" class="btn btn-secondary" download="do-pilot-survey-qr.png">Download QR Code</a>
+        <a id="downloadQr" class="btn btn-secondary" download="do-customer-success-survey-qr.png">Download QR Code</a>
         <button class="btn btn-secondary" id="printBtn" type="button">Print QR Code</button>
       </div>
     </div>
@@ -67,10 +67,10 @@
       const qr = document.getElementById('qrImage').src;
       const win = window.open('', '_blank');
       win.document.write(`
-        <html><head><title>DO Pilot Survey QR Code</title>
+        <html><head><title>DO Customer Success Survey QR Code</title>
         <style>body{text-align:center;font-family:sans-serif;padding:2rem}img{max-width:400px}h1{color:#1a365d}</style>
         </head><body>
-        <h1>DO Pilot Customer Success Survey</h1>
+        <h1>DO Customer Success Survey</h1>
         <p>Scan to complete the survey</p>
         <img src="${qr}">
         <p style="margin-top:1rem;font-size:14px;color:#666">${document.getElementById('surveyUrl').value}</p>

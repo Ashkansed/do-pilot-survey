@@ -1,4 +1,4 @@
-# DO Pilot Customer Success Survey
+# DO Customer Success Survey
 
 Web-based survey for Dimension Ortho pilot feedback, based on the Customer Success Survey document. Share via QR code for easy mobile access.
 

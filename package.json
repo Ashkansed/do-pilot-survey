@@ -1,7 +1,7 @@
 {
-  "name": "do-pilot-survey",
+  "name": "do-customer-success-survey",
   "version": "1.0.0",
-  "description": "Dimension Ortho Customer Success Pilot Survey",
+  "description": "DO Customer Success Survey",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
