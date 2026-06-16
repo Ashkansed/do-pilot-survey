@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: do-customer-success-survey
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: PUBLIC_URL
+        sync: false

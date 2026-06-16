@@ -28,6 +28,32 @@ Then open:
 
 ## Sharing for Production
 
+For participants to access the survey from their phones, deploy to Render as a **Web Service** (not Static Site).
+
+### Render setup (free)
+
+1. Go to [render.com](https://render.com) → **New** → **Web Service** (not Static Site)
+2. Connect your GitHub repo: `Ashkansed/do-pilot-survey`
+3. Use these settings:
+
+| Field | Value |
+|-------|-------|
+| **Name** | `do-customer-success-survey` |
+| **Branch** | `main` |
+| **Root Directory** | *(leave blank)* |
+| **Runtime** | `Node` |
+| **Build Command** | `npm install` |
+| **Start Command** | `npm start` |
+
+4. Add an environment variable:
+   - **Key:** `PUBLIC_URL`
+   - **Value:** your Render URL, e.g. `https://do-customer-success-survey.onrender.com`
+     *(set this after the first deploy, then redeploy once so the QR code uses the correct link)*
+
+5. Click **Create Web Service**
+
+Or use the included `render.yaml` blueprint: **New** → **Blueprint** → connect the repo.
+
 For participants to access the survey from their phones, deploy to a server with a public URL and set:
 
 ```bash
