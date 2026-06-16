@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Responses — Admin</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container" style="max-width: 1100px;">
+    <header>
+      <h1>Survey Responses</h1>
+      <p class="subtitle">Dimension Ortho Pilot Survey — Admin Dashboard</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="number" id="totalCount">0</div>
+        <div class="label">Total Responses</div>
+      </div>
+      <div class="stat">
+        <div class="number" id="latestDate">—</div>
+        <div class="label">Latest Submission</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <a href="/api/responses/csv" class="btn btn-secondary">Export CSV</a>
+      <a href="/share.html" class="btn btn-secondary">Share (QR Code)</a>
+      <button class="btn btn-secondary" id="refreshBtn" type="button">Refresh</button>
+    </div>
+
+    <div class="card" style="overflow-x: auto;">
+      <table id="responsesTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Provider</th>
+            <th>Period</th>
+            <th>Platform Avg</th>
+            <th>Product Avg</th>
+            <th>Satisfaction Avg</th>
+            <th>Continue?</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="responsesBody">
+          <tr><td colspan="9" style="text-align:center;color:var(--muted);">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="detailPanel" class="card" style="display: none;">
+      <h2>Response Detail</h2>
+      <pre id="detailContent" style="white-space: pre-wrap; font-size: 0.85rem; color: var(--text);"></pre>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/">Take Survey</a>
+      <a href="/share.html">Share Survey</a>
+    </nav>
+  </div>
+
+  <script>
+    function avg(keys, data) {
+      const vals = keys.map((k) => Number(data[k])).filter((v) => !isNaN(v));
+      if (vals.length === 0) return '—';
+      return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+    }
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit',
+      });
+    }
+
+    async function loadResponses() {
+      const res = await fetch('/api/responses');
+      const data = await res.json();
+      const tbody = document.getElementById('responsesBody');
+
+      document.getElementById('totalCount').textContent = data.length;
+      document.getElementById('latestDate').textContent = data.length
+        ? formatDate(data[data.length - 1].submittedAt).split(',')[0]
+        : '—';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);">No responses yet. Share the survey QR code to get started.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map((r, i) => {
+        const platformAvg = avg(['platform_q1','platform_q2','platform_q3','platform_q4','platform_q5','platform_q6'], r);
+        const productAvg = avg(['product_q1','product_q2','product_q3','product_q4','product_q5'], r);
+        const satAvg = avg(['satisfaction_q1','satisfaction_q2','satisfaction_q3','satisfaction_q4'], r);
+        return `<tr>
+          <td>${formatDate(r.submittedAt)}</td>
+          <td>${esc(r.respondentName)}</td>
+          <td>${esc(r.prescribingProvider || '—')}</td>
+          <td>${esc(r.surveyPeriod || '—')}</td>
+          <td>${platformAvg}</td>
+          <td>${productAvg}</td>
+          <td>${satAvg}</td>
+          <td>${r.continueLikelihood || '—'}/5</td>
+          <td><button class="btn btn-secondary" style="padding:0.3rem 0.75rem;font-size:0.8rem;" onclick="showDetail(${i})">View</button></td>
+        </tr>`;
+      }).join('');
+
+      window._responses = data;
+    }
+
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function showDetail(index) {
+      const r = window._responses[index];
+      const panel = document.getElementById('detailPanel');
+      const content = document.getElementById('detailContent');
+
+      const lines = [
+        `Submitted: ${formatDate(r.submittedAt)}`,
+        `Name: ${r.respondentName}`,
+        `Prescribing Provider: ${r.prescribingProvider || 'N/A'}`,
+        `Date Completed: ${r.dateCompleted}`,
+        `Survey Period: ${r.surveyPeriod}`,
+        '',
+        '--- Section 1: DO Platform ---',
+        `Q1 Scanner understanding: ${r.platform_q1}/5`,
+        `Q2 Print equipment confidence: ${r.platform_q2}/5`,
+        `Q3 Scan app navigation: ${r.platform_q3}/5`,
+        `Q4 Training materials: ${r.platform_q4}/5`,
+        `Q5 Onboarding expectations: ${r.platform_q5}/5`,
+        `Q6 Overall readiness: ${r.platform_q6}/5`,
+        `Comments: ${r.platformComments || 'N/A'}`,
+        '',
+        '--- Section 2: Product Use Case ---',
+        `Q1 Appropriate patients: ${r.product_q1}/5`,
+        `Q2 Clinical workflow fit: ${r.product_q2}/5`,
+        `Q3 Billing understanding: ${r.product_q3}/5`,
+        `Q4 Reimbursement confidence: ${r.product_q4}/5`,
+        `Q5 Meaningful clinical need: ${r.product_q5}/5`,
+        `Products utilized: ${(r.productsUtilized || []).join(', ') || 'None selected'}`,
+        `Comments: ${r.productComments || 'N/A'}`,
+        '',
+        '--- Section 3: Satisfaction ---',
+        `Q1 Physician satisfaction: ${r.satisfaction_q1}/5`,
+        `Q2 Recommend continued use: ${r.satisfaction_q2}/5`,
+        `Q3 Patient response: ${r.satisfaction_q3}/5`,
+        `Q4 Patient experience: ${r.satisfaction_q4}/5`,
+        `Biggest success: ${r.biggestSuccess || 'N/A'}`,
+        `Barriers: ${r.barriers || 'N/A'}`,
+        `Additional support needed: ${r.additionalSupport || 'N/A'}`,
+        `Continue likelihood: ${r.continueLikelihood}/5`,
+      ];
+
+      content.textContent = lines.join('\n');
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadResponses);
+    loadResponses();
+  </script>
+</body>
+</html>

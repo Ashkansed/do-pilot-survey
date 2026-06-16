@@ -1,0 +1,15 @@
+{
+  "name": "do-pilot-survey",
+  "version": "1.0.0",
+  "description": "Dimension Ortho Customer Success Pilot Survey",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "uuid": "^11.1.0"
+  }
+}

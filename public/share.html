@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Survey — QR Code</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Share Survey</h1>
+      <p class="subtitle">Scan the QR code or share the link to collect pilot feedback</p>
+    </header>
+
+    <div class="card share-card">
+      <h2>DO Pilot Customer Success Survey</h2>
+      <p style="color: var(--muted); margin-top: 0.5rem;">Recipients can scan this code with their phone camera to open the survey.</p>
+
+      <img id="qrImage" class="qr-image" src="/api/qr" alt="Survey QR Code">
+
+      <div class="url-box">
+        <input type="text" id="surveyUrl" readonly>
+        <button class="btn btn-secondary" id="copyBtn" type="button">Copy</button>
+      </div>
+      <p id="copyStatus" style="font-size: 0.85rem; color: var(--success); display: none;">Link copied!</p>
+
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <a id="downloadQr" class="btn btn-secondary" download="do-pilot-survey-qr.png">Download QR Code</a>
+        <button class="btn btn-secondary" id="printBtn" type="button">Print QR Code</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>How to use</h2>
+      <ol style="padding-left: 1.25rem; color: var(--muted); font-size: 0.95rem;">
+        <li style="margin-bottom: 0.5rem;">Print the QR code or display it on a screen at your clinic.</li>
+        <li style="margin-bottom: 0.5rem;">Participants scan with their phone to open the survey.</li>
+        <li style="margin-bottom: 0.5rem;">Responses are saved automatically — view them on the <a href="/admin.html">admin dashboard</a>.</li>
+        <li>Export responses as CSV for reporting.</li>
+      </ol>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/">Take Survey</a>
+      <a href="/admin.html">View Responses</a>
+    </nav>
+  </div>
+
+  <script>
+    async function init() {
+      const res = await fetch('/api/share-info');
+      const info = await res.json();
+      document.getElementById('surveyUrl').value = info.surveyUrl;
+      document.getElementById('downloadQr').href = info.qrUrl;
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const url = document.getElementById('surveyUrl').value;
+      await navigator.clipboard.writeText(url);
+      const status = document.getElementById('copyStatus');
+      status.style.display = 'block';
+      setTimeout(() => { status.style.display = 'none'; }, 2000);
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      const qr = document.getElementById('qrImage').src;
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html><head><title>DO Pilot Survey QR Code</title>
+        <style>body{text-align:center;font-family:sans-serif;padding:2rem}img{max-width:400px}h1{color:#1a365d}</style>
+        </head><body>
+        <h1>DO Pilot Customer Success Survey</h1>
+        <p>Scan to complete the survey</p>
+        <img src="${qr}">
+        <p style="margin-top:1rem;font-size:14px;color:#666">${document.getElementById('surveyUrl').value}</p>
+        </body></html>
+      `);
+      win.document.close();
+      win.print();
+    });
+
+    init();
+  </script>
+</body>
+</html>

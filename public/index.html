@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO Pilot Survey — Customer Success</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Customer Success Survey</h1>
+      <p class="subtitle">Dimension Ortho Pilot Feedback — to be completed every 30 days</p>
+    </header>
+
+    <form id="surveyForm">
+      <!-- Respondent Info -->
+      <div class="card">
+        <h2>Respondent Information</h2>
+        <div class="field">
+          <label for="respondentName">Name of Person Completing the Survey *</label>
+          <input type="text" id="respondentName" name="respondentName" required>
+          <span class="error">This field is required</span>
+        </div>
+        <div class="field">
+          <label for="prescribingProvider">Prescribing Provider (if different than above)</label>
+          <input type="text" id="prescribingProvider" name="prescribingProvider">
+        </div>
+        <div class="field">
+          <label for="dateCompleted">Date Completed *</label>
+          <input type="date" id="dateCompleted" name="dateCompleted" required>
+          <span class="error">This field is required</span>
+        </div>
+        <div class="field">
+          <label>Survey Period *</label>
+          <div class="checkbox-group" id="surveyPeriodGroup">
+            <label><input type="radio" name="surveyPeriod" value="30 day" required> 30 day</label>
+            <label><input type="radio" name="surveyPeriod" value="60 day"> 60 day</label>
+            <label><input type="radio" name="surveyPeriod" value="90 day"> 90 day</label>
+          </div>
+          <span class="error">Please select a survey period</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Rating Scale</h3>
+        <div class="scale-legend">
+          <span>1 — Strongly Disagree</span>
+          <span>3 — Neutral</span>
+          <span>5 — Strongly Agree</span>
+        </div>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="card">
+        <h2>Section 1: DO Platform</h2>
+
+        <div class="question">
+          <p>1. Our team understands when and how to use the scanner.</p>
+          <div class="rating-scale" data-name="platform_q1"></div>
+        </div>
+        <div class="question">
+          <p>2. Our team feels confident operating the print equipment independently.</p>
+          <div class="rating-scale" data-name="platform_q2"></div>
+        </div>
+        <div class="question">
+          <p>3. Our team can navigate the scan app with ease.</p>
+          <div class="rating-scale" data-name="platform_q3"></div>
+        </div>
+        <div class="question">
+          <p>4. Training materials &amp; resources have been easy to access and use.</p>
+          <div class="rating-scale" data-name="platform_q4"></div>
+        </div>
+        <div class="question">
+          <p>5. The onboarding process has met our expectations.</p>
+          <div class="rating-scale" data-name="platform_q5"></div>
+        </div>
+        <div class="question">
+          <p>6. How would you rate your team's overall readiness to fully utilize the product?</p>
+          <div class="scale-legend">
+            <span>1 — Very Low</span>
+            <span>5 — Very High</span>
+          </div>
+          <div class="rating-scale" data-name="platform_q6"></div>
+        </div>
+        <div class="field">
+          <label for="platformComments">Platform: Additional Comments</label>
+          <textarea id="platformComments" name="platformComments" rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="card">
+        <h2>Section 2: Product Use Case &amp; Insurance / Reimbursement</h2>
+
+        <div class="question">
+          <p>1. We have identified appropriate patients for the product.</p>
+          <div class="rating-scale" data-name="product_q1"></div>
+        </div>
+        <div class="question">
+          <p>2. The product fits well into our clinical workflow.</p>
+          <div class="rating-scale" data-name="product_q2"></div>
+        </div>
+        <div class="question">
+          <p>3. Our team understands the Billing &amp; reimbursement needs.</p>
+          <div class="rating-scale" data-name="product_q3"></div>
+        </div>
+        <div class="question">
+          <p>4. We are confident in our ability to obtain reimbursement when clinically appropriate.</p>
+          <div class="rating-scale" data-name="product_q4"></div>
+        </div>
+        <div class="question">
+          <p>5. The product is helping us address a meaningful clinical need.</p>
+          <div class="rating-scale" data-name="product_q5"></div>
+        </div>
+        <div class="question">
+          <p>6. Products being utilized (select all that apply)</p>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="productsUtilized" value="Short Arm Cast"> Short Arm Cast</label>
+            <label><input type="checkbox" name="productsUtilized" value="Volar Wrist Splint"> Volar Wrist Splint</label>
+            <label><input type="checkbox" name="productsUtilized" value="Thumb Spica Splint"> Thumb Spica Splint</label>
+            <label><input type="checkbox" name="productsUtilized" value="Thumb Spica Cast"> Thumb Spica Cast</label>
+            <label><input type="checkbox" name="productsUtilized" value="Ulnar Gutter Splint"> Ulnar Gutter Splint</label>
+            <label><input type="checkbox" name="productsUtilized" value="Radial Gutter Splint"> Radial Gutter Splint</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="productComments">Product: Additional Comments</label>
+          <textarea id="productComments" name="productComments" rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="card">
+        <h2>Section 3: Physician &amp; Patient Satisfaction</h2>
+
+        <div class="question">
+          <p>1. Physicians are satisfied with the clinical performance of the product.</p>
+          <div class="rating-scale" data-name="satisfaction_q1"></div>
+        </div>
+        <div class="question">
+          <p>2. Physicians would recommend continued use of the product.</p>
+          <div class="rating-scale" data-name="satisfaction_q2"></div>
+        </div>
+        <div class="question">
+          <p>3. Patients have responded positively to the 3D device product.</p>
+          <div class="rating-scale" data-name="satisfaction_q3"></div>
+        </div>
+        <div class="question">
+          <p>4. The product has improved the overall patient experience.</p>
+          <div class="rating-scale" data-name="satisfaction_q4"></div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem;">Open Feedback</h3>
+
+        <div class="field">
+          <label for="biggestSuccess">5. What has been the biggest success with the product so far?</label>
+          <textarea id="biggestSuccess" name="biggestSuccess" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="barriers">6. What barriers or challenges are limiting adoption?</label>
+          <textarea id="barriers" name="barriers" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="additionalSupport">7. What additional support would help your team achieve greater success?</label>
+          <textarea id="additionalSupport" name="additionalSupport" rows="3"></textarea>
+        </div>
+        <div class="question">
+          <p>8. How likely are you to continue using the product after the initial evaluation period?</p>
+          <div class="scale-legend">
+            <span>1 — Very Unlikely</span>
+            <span>5 — Very Likely</span>
+          </div>
+          <div class="rating-scale" data-name="continueLikelihood"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn">Submit Survey</button>
+    </form>
+
+    <div id="successView" class="card success-message" style="display: none;">
+      <h2>Thank you!</h2>
+      <p>Your survey response has been submitted successfully.</p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Please contact LHarkins@DimensionOrtho.com if you have any questions.</p>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/share.html">Share Survey (QR Code)</a>
+      <a href="/admin.html">View Responses</a>
+    </nav>
+  </div>
+
+  <script src="/survey.js"></script>
+</body>
+</html>
